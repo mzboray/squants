@@ -33,9 +33,9 @@ class PowerRampSpec extends AnyFlatSpec with Matchers {
 
   it should "create values from properly formatted Strings" in {
     PowerRamp("10.22 W/h").get should be(WattsPerHour(10.22))
-    PowerRamp("10.22 W/m").get should be(WattsPerMinute(10.22))
+    PowerRamp("10.22 W/min").get should be(WattsPerMinute(10.22))
     PowerRamp("10.22 kW/h").get should be(KilowattsPerHour(10.22))
-    PowerRamp("10.22 kW/m").get should be(KilowattsPerMinute(10.22))
+    PowerRamp("10.22 kW/min").get should be(KilowattsPerMinute(10.22))
     PowerRamp("10.22 MW/h").get should be(MegawattsPerHour(10.22))
     PowerRamp("10.22 GW/h").get should be(GigawattsPerHour(10.22))
     PowerRamp("10.22 zz").failed.get should be(QuantityParseException("Unable to parse PowerRamp", "10.22 zz"))
@@ -43,23 +43,23 @@ class PowerRampSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "properly convert to all supported Units of Measure" in {
-    val x = WattsPerHour(1)
+    val x = WattsPerHour(60)
 
-    x.toWattsPerHour should be(1)
-    x.toWattsPerMinutes should be(60)
-    x.toKilowattsPerHour should be(1 / MetricSystem.Kilo)
-    x.toKilowattsPerMinute should be(60 / MetricSystem.Kilo)
-    x.toMegawattsPerHour should be(1 / MetricSystem.Mega)
-    x.toGigawattsPerHour should be(1 / MetricSystem.Giga)
+    x.toWattsPerHour should be(60)
+    x.toWattsPerMinutes should be(1)
+    x.toKilowattsPerHour should be(60 / MetricSystem.Kilo)
+    x.toKilowattsPerMinute should be(1 / MetricSystem.Kilo)
+    x.toMegawattsPerHour should be(60 / MetricSystem.Mega)
+    x.toGigawattsPerHour should be(60 / MetricSystem.Giga)
 
-    WattsPerHour(1) should be(WattsPerMinute(60))
+    WattsPerHour(60) should be(WattsPerMinute(1))
   }
 
   it should "return properly formatted strings for all supported Units of Measure" in {
     WattsPerHour(1).toString(WattsPerHour) should be("1.0 W/h")
-    WattsPerMinute(1).toString(WattsPerMinute) should be("1.0 W/m")
+    WattsPerMinute(1).toString(WattsPerMinute) should be("1.0 W/min")
     KilowattsPerHour(1).toString(KilowattsPerHour) should be("1.0 kW/h")
-    KilowattsPerMinute(1).toString(KilowattsPerMinute) should be("1.0 kW/m")
+    KilowattsPerMinute(1).toString(KilowattsPerMinute) should be("1.0 kW/min")
     MegawattsPerHour(1).toString(MegawattsPerHour) should be("1.0 MW/h")
     GigawattsPerHour(1).toString(GigawattsPerHour) should be("1.0 GW/h")
   }
@@ -103,9 +103,9 @@ class PowerRampSpec extends AnyFlatSpec with Matchers {
     import PowerRampConversions._
 
     "10.22 W/h".toPowerRamp.get should be(WattsPerHour(10.22))
-    "10.22 W/m".toPowerRamp.get should be(WattsPerMinute(10.22))
+    "10.22 W/min".toPowerRamp.get should be(WattsPerMinute(10.22))
     "10.22 kW/h".toPowerRamp.get should be(KilowattsPerHour(10.22))
-    "10.22 kW/m".toPowerRamp.get should be(KilowattsPerMinute(10.22))
+    "10.22 kW/min".toPowerRamp.get should be(KilowattsPerMinute(10.22))
     "10.22 MW/h".toPowerRamp.get should be(MegawattsPerHour(10.22))
     "10.22 GW/h".toPowerRamp.get should be(GigawattsPerHour(10.22))
     "10.22 zz".toPowerRamp.failed.get should be(QuantityParseException("Unable to parse PowerRamp", "10.22 zz"))
